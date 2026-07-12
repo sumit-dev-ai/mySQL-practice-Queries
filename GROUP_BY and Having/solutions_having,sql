@@ -1,0 +1,77 @@
+-- Q1. Find categories that have more than 10 products in one store.
+SELECT category_id , COUNT(id) AS total_products
+FROM products
+WHERE store_id = ?
+GROUP BY category_id
+HAVING COUNT(*) > 10;
+
+-- Q2. Find suppliers that have at least 5 active products in one store.
+SELECT supplier_id, COUNT(id) as ACTIVE_PRODUCTS
+FROM products
+WHERE store_id = ?
+AND is_active = true
+GROUP BY supplier_id
+HAVING COUNT(*) >= 5;
+
+-- Q3. Find categories whose total stock quantity exceeds 500 in one store.
+SELECT category_id, COALESCE(SUM(stock_quantity), 0) AS total_stock_quantity
+FROM products
+WHERE store_id = ?
+GROUP BY category_id
+HAVING  COALESCE(SUM(stock_quantity), 0) > 500;
+
+-- Q4. Find suppliers whose average selling price is greater than 1000.
+SELECT supplier_id , COALESCE(AVG(selling_price), 0) AS avg_selling_price
+FROM products
+WHERE store_id = ?
+GROUP BY supplier_id
+HAVING AVG(selling_price) > 1000;
+
+-- Q5. Find categories whose total inventory value exceeds 50,000.
+SELECT category_id , 
+      COALESCE(SUM(stock_quantity * cost_price), 0) AS total_inventory_value
+FROM products
+WHERE store_id = ?
+GROUP BY category_id
+HAVING SUM(stock_quantity * cost_price) > 50000;
+
+
+-- Q6. Find suppliers whose highest selling price is greater than 5000.
+SELECT supplier_id , 
+      COALESCE(MAX(selling_price), 0) AS highest_selling_price
+FROM products
+WHERE store_id = ?
+GROUP BY supplier_id
+HAVING MAX(selling_price) > 5000;
+
+-- Q7. Find categories whose lowest selling price is less than 100.
+SELECT category_id , 
+      COALESCE(MIN(selling_price), 0) AS lowest_selling_price
+FROM products
+WHERE store_id = ?
+GROUP BY category_id
+HAVING MIN(selling_price) < 100;
+
+
+-- Q8. Find active products grouped by supplier, but show only suppliers with more than 20 active products.
+
+SELECT supplier_id, COUNT(id) AS total_active_products
+FROM products
+WHERE store_id = ?
+AND is_active = true
+GROUP BY supplier_id
+HAVING COUNT(id) > 20;
+
+-- Q9. Find categories where the average cost price is greater than 500.
+SELECT category_id , COALESCE(AVG(cost_price), 0) AS avg_cost_price
+FROM products
+WHERE store_id = ?
+GROUP BY category_id
+HAVING AVG(cost_price) > 500;
+
+-- Q10. Find suppliers whose total stock quantity is less than 100.
+SELECT supplier_id, COALESCE(SUM(stock_quantity), 0) AS total_stock_quantity
+FROM products
+WHERE store_id = ?
+GROUP BY supplier_id
+HAVING SUM(stock_quantity) < 100;
